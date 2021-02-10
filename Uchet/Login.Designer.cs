@@ -38,6 +38,7 @@ namespace Uchet
             this.sotrTableAdapter = new Uchet.KazakovDataSetTableAdapters.SotrTableAdapter();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.sotrBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.kazakovDataSet)).BeginInit();
             this.SuspendLayout();
@@ -104,11 +105,20 @@ namespace Uchet
             this.comboBox1.TabIndex = 5;
             this.comboBox1.ValueMember = "snum";
             // 
+            // richTextBox1
+            // 
+            this.richTextBox1.Location = new System.Drawing.Point(347, 60);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.Size = new System.Drawing.Size(206, 207);
+            this.richTextBox1.TabIndex = 6;
+            this.richTextBox1.Text = "Admin\t\t\tTmZT9ywVjiKvfEVn\n\nUser\t\t\tj4zgdzqwmwVgeZeN";
+            // 
             // Login
             // 
             this.AcceptButton = this.button1;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
-            this.ClientSize = new System.Drawing.Size(358, 394);
+            this.ClientSize = new System.Drawing.Size(576, 394);
+            this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.label2);
@@ -141,5 +151,6 @@ namespace Uchet
         private KazakovDataSetTableAdapters.SotrTableAdapter sotrTableAdapter;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.RichTextBox richTextBox1;
     }
 }

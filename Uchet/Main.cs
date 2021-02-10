@@ -148,7 +148,7 @@ namespace Uchet
             //Фильтр таблицы кабинетов
             if ((sender as DataGridView).SelectedCells.Count > 0)
             {
-                int teach = Convert.ToInt32(dataGridView1.Rows[dataGridView1.SelectedCells[0].RowIndex].Cells[0].Value);
+                int teach = Convert.ToInt32((sender as DataGridView).Rows[dataGridView1.SelectedCells[0].RowIndex].Cells[0].Value);
                 kabsBindingSource.Filter = "teach = " + teach;
                 if (kabsBindingSource.Count == 0)
                 {
@@ -194,7 +194,7 @@ namespace Uchet
             //фильтр ассоциативной таблицы
             if ((sender as DataGridView).SelectedCells.Count > 0)
             {
-                int pred = Convert.ToInt32(dataGridView2.Rows[dataGridView2.SelectedCells[0].RowIndex].Cells[0].Value);
+                int pred = Convert.ToInt32((sender as DataGridView).Rows[(sender as DataGridView).SelectedCells[0].RowIndex].Cells[0].Value);
                 prepodavBindingSource.Filter = "pnum = " + pred;
 
                 //Создание строки фильтра для таблицы преподавателей и фильтрация
@@ -220,6 +220,30 @@ namespace Uchet
                     teachersBindingSource.Filter = "tnum = 0";
                     MessageBox.Show("Данный предмет никто не преподает");
                 }
+
+                progPredBindingSource.Filter = "predm = " + pred;
+
+                //Создание строки фильтра для таблицы программ и фильтрация
+                count = progPredBindingSource.Count;
+                
+                if (count != 0)//Если программы используются в данном предмете
+                {
+                    filt = "(";
+                    for (int i = 0; i < dataGridView8.Rows.Count; i++)
+                    {
+                        filt += Convert.ToInt32(dataGridView8[0, i].Value) + ", ";
+                    }
+
+                    filt = filt.Remove(filt.Length - 1 - 1);
+
+                    programsBindingSource.Filter = "Prnum in " + filt + ")";
+                }
+                else
+                {
+                    programsBindingSource.Filter = "prnum = 0";
+                    MessageBox.Show("У данного предмета нет установленных программ");
+                }
+
             }
             else
             {
@@ -233,11 +257,16 @@ namespace Uchet
             //Фильтр таблицы преподавателей по кабинету
             if ((sender as DataGridView).SelectedCells.Count > 0)
             {
-                int prep = Convert.ToInt32(dataGridView3.Rows[dataGridView3.SelectedCells[0].RowIndex].Cells[2].Value);
+                int prep = Convert.ToInt32((sender as DataGridView).Rows[(sender as DataGridView).SelectedCells[0].RowIndex].Cells[2].Value);
                 teachersBindingSource.Filter = "tnum = " + prep;
                 if (teachersBindingSource.Count == 0)
                 {
                     MessageBox.Show("За выбранный кабинет никто не отвечает");
+                }
+                pC1BindingSource.Filter = "kab = " + prep;
+                if (pC1BindingSource.Count == 0)
+                {
+                    MessageBox.Show("В данном кабинете нет пк");
                 }
             }
             else
@@ -254,6 +283,11 @@ namespace Uchet
             predmetBindingSource.RemoveFilter();
             kabsBindingSource.RemoveFilter();
             prepodavBindingSource.RemoveFilter();
+            progPredBindingSource.RemoveFilter();
+            installBindingSource.RemoveFilter();
+            pC1BindingSource.RemoveFilter();
+            programsBindingSource.RemoveFilter();
+            licenseBindingSource.RemoveFilter();
         }
         #endregion
 
@@ -587,8 +621,10 @@ namespace Uchet
                     filt += Convert.ToInt32(dataGridView4[1, i].Value) + ", ";
 
                 }
-
-                filt = filt.Remove(filt.Length - 1 - 1);
+                if (predmetBindingSource.Count == 0)
+                    filt = "(0";
+                else
+                    filt = filt.Remove(filt.Length - 1 - 1);
 
                 predmetBindingSource.Filter = "pnum in " + filt + ")";
 
@@ -632,13 +668,13 @@ namespace Uchet
             pr = 0;
             if ((sender as DataGridView).SelectedCells.Count > 0)
             {
-                licenseBindingSource.Filter = "lnum = " + Convert.ToInt32(dataGridView5.Rows[dataGridView5.SelectedCells[0].RowIndex].Cells[3].Value);
+                licenseBindingSource.Filter = "lnum = " + Convert.ToInt32((sender as DataGridView).Rows[(sender as DataGridView).SelectedCells[0].RowIndex].Cells[3].Value);
                 if (licenseBindingSource.Count == 0)
                 {
                     licenseBindingSource.Filter = "lnum = 0";
                     MessageBox.Show("У данной программы отсутствует лицензия");
                 }
-                int prog = Convert.ToInt32(dataGridView5.Rows[dataGridView5.SelectedCells[0].RowIndex].Cells[0].Value);
+                int prog = Convert.ToInt32((sender as DataGridView).Rows[(sender as DataGridView).SelectedCells[0].RowIndex].Cells[0].Value);
                 installBindingSource.Filter = "prog = " + prog;
 
 
@@ -695,7 +731,7 @@ namespace Uchet
             //Фильтр ассоциативной таблицы
             if ((sender as DataGridView).SelectedCells.Count > 0)
             {
-                int pc = Convert.ToInt32(dataGridView6.Rows[dataGridView6.SelectedCells[0].RowIndex].Cells[0].Value);
+                int pc = Convert.ToInt32((sender as DataGridView).Rows[(sender as DataGridView).SelectedCells[0].RowIndex].Cells[0].Value);
                 installBindingSource.Filter = "pc = " + pc;
 
                 //Создание строки фильтра для таблицы программ и фильтрация
@@ -767,7 +803,7 @@ namespace Uchet
             //Фильтр таблицы ПО по лицензии
             if ((sender as DataGridView).SelectedCells.Count > 0)
             {
-                int prog = Convert.ToInt32(dataGridView10.Rows[dataGridView10.SelectedCells[0].RowIndex].Cells[0].Value);
+                int prog = Convert.ToInt32((sender as DataGridView).Rows[dataGridView10.SelectedCells[0].RowIndex].Cells[0].Value);
                 programsBindingSource.Filter = "license = " + prog;
                 if (programsBindingSource.Count == 0)
                 {
@@ -778,18 +814,6 @@ namespace Uchet
             {
                 MessageBox.Show("Лицензия не выбрана");
             }
-        }
-
-        private void button6_Click(object sender, EventArgs e)
-        {
-            pr = 0;
-            //Сброс всех установленных фильтров
-            predmetBindingSource.RemoveFilter();
-            progPredBindingSource.RemoveFilter();
-            installBindingSource.RemoveFilter();
-            pC1BindingSource.RemoveFilter();
-            programsBindingSource.RemoveFilter();
-            licenseBindingSource.RemoveFilter();
         }
         #endregion
 
