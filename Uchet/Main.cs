@@ -258,12 +258,13 @@ namespace Uchet
             if ((sender as DataGridView).SelectedCells.Count > 0)
             {
                 int prep = Convert.ToInt32((sender as DataGridView).Rows[(sender as DataGridView).SelectedCells[0].RowIndex].Cells[2].Value);
+                int kab = Convert.ToInt32((sender as DataGridView).Rows[(sender as DataGridView).SelectedCells[0].RowIndex].Cells[0].Value);
                 teachersBindingSource.Filter = "tnum = " + prep;
                 if (teachersBindingSource.Count == 0)
                 {
                     MessageBox.Show("За выбранный кабинет никто не отвечает");
                 }
-                pC1BindingSource.Filter = "kab = " + prep;
+                pC1BindingSource.Filter = "kab = " + kab;
                 if (pC1BindingSource.Count == 0)
                 {
                     MessageBox.Show("В данном кабинете нет пк");
@@ -689,12 +690,16 @@ namespace Uchet
                         filt += Convert.ToInt32(dataGridView7[1, i].Value) + ", ";
                     }
 
-                    filt = filt.Remove(filt.Length - 1 - 1);
+                    if (installBindingSource.Count == 0)
+                        filt = "(0)";
+                    else
+                        filt = filt.Remove(filt.Length - 1 - 1);
 
                     pC1BindingSource.Filter = "PCnum in " + filt + ")";
                 }
                 else
                 {
+                    pC1BindingSource.Filter = "PCnum = 0";
                     MessageBox.Show("Данная программа нигде не установлена");
                 }
 
@@ -1212,6 +1217,42 @@ namespace Uchet
                         dataGridView5.Rows[i].DefaultCellStyle.BackColor = Color.Gray;
                     }
                 }
+
+                switch (tabControl1.SelectedIndex)
+                {
+                    case 0:
+                        {
+                            dataGridView2.ClearSelection();
+                            dataGridView3.ClearSelection();
+                            break;
+                        }
+                    case 1:
+                        {
+                            dataGridView6.ClearSelection();
+                            dataGridView9.ClearSelection();
+                            dataGridView10.ClearSelection();
+                            break;
+                        }
+                    case 2:
+                        {
+                            dataGridView15.ClearSelection();
+                            dataGridView13.ClearSelection();
+                            break;
+                        }
+                    case 3:
+                        {
+                            dataGridView18.ClearSelection();
+                            dataGridView19.ClearSelection();
+                            dataGridView21.ClearSelection();
+                            break;
+                        }
+                    case 4:
+                        {
+                            dataGridView25.ClearSelection();
+                            break;
+                        }
+                }
+                    
             }
         }
         #endregion
@@ -1471,5 +1512,50 @@ namespace Uchet
             f.Show();
         }
         #endregion
+
+
+        private void dataGridView2_CellClick_1(object sender, DataGridViewCellEventArgs e)
+        {
+            tabControl1.SelectedIndex = 2;
+            dataGridView2_CellClick(sender, e);
+
+                        
+        }
+
+        private void dataGridView3_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            tabControl1.SelectedIndex = 3;
+            dataGridView3_CellDoubleClick(sender, e);
+            
+
+        }
+
+        private void dataGridView10_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            tabControl1.SelectedIndex = 4;
+            dataGridView10_CellContentClick(sender, e);
+            
+
+                       
+        }
+
+
+        private void dataGridView15_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            tabControl1.SelectedIndex = 0;
+            dataGridView1_CellClick(sender, e);
+            
+
+                       
+        }
+
+        private void dataGridView13_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            tabControl1.SelectedIndex = 1;
+            dataGridView5_CellClick(sender, e);
+
+
+                        
+        }
     }
 }
